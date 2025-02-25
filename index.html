@@ -33,19 +33,24 @@
     const usersRef = ref(database, 'users');
 
     onValue(usersRef, (snapshot) => {
+      console.log('Snapshot:', snapshot.val()); // Debugging: Check if data is being fetched
       userList.innerHTML = ''; // Clear the list
       const users = snapshot.val();
 
       if (users) {
         Object.keys(users).forEach((key) => {
           const user = users[key];
+          console.log('User:', user); // Debugging: Check individual user data
           const li = document.createElement('li');
           li.textContent = `Name: ${user.name}, Email: ${user.email}, Age: ${user.age}`;
           userList.appendChild(li);
         });
       } else {
+        console.log('No users found.'); // Debugging: Check if no data is found
         userList.innerHTML = '<li>No users found.</li>';
       }
+    }, (error) => {
+      console.error('Error fetching data:', error); // Debugging: Check for errors
     });
   </script>
 </body>
