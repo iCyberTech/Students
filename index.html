@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Retrieve User Data</title>
+</head>
+<body>
+  <h1>Retrieve User Data</h1>
+  <ul id="userList"></ul>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCcXcVdfd5f8AXb8ShvDKiES2QqRt0a7s0",
+      authDomain: "students-academic-portal.firebaseapp.com",
+      projectId: "students-academic-portal",
+      storageBucket: "students-academic-portal.firebasestorage.app",
+      messagingSenderId: "975616904872",
+      appId: "1:975616904872:web:eed0c5280907416a25fc9d",
+      measurementId: "G-V917QYZ240"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Fetch and display user data
+    const userList = document.getElementById('userList');
+    const usersRef = ref(database, 'users');
+
+    onValue(usersRef, (snapshot) => {
+      userList.innerHTML = ''; // Clear the list
+      const users = snapshot.val();
+
+      if (users) {
+        Object.keys(users).forEach((key) => {
+          const user = users[key];
+          const li = document.createElement('li');
+          li.textContent = `Name: ${user.name}, Email: ${user.email}, Age: ${user.age}`;
+          userList.appendChild(li);
+        });
+      } else {
+        userList.innerHTML = '<li>No users found.</li>';
+      }
+    });
+  </script>
+</body>
+</html>
